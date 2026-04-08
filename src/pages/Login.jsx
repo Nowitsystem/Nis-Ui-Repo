@@ -1,122 +1,158 @@
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
 import { FaApple } from "react-icons/fa";
+import { Cpu, ArrowLeft } from "lucide-react";
+import loginImg from "../assets/login.png";
 
 export default function Login() {
   return (
-    <div className="min-h-screen flex bg-slate-50 text-slate-900">
-      {/* LEFT SIDE */}
-      <div className="hidden lg:flex w-1/2 items-center justify-center p-16 bg-slate-100">
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="max-w-lg text-center"
-        >
-          <img
-            src="/dashboard-preview.png"
-            alt="dashboard"
-            className="rounded-xl shadow-lg mb-10"
-          />
+    <div className="min-h-screen flex bg-[#050510] text-white overflow-hidden relative">
+      {/* Background blobs */}
+      <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
+        <div className="absolute top-1/4 -left-1/4 w-1/2 h-1/2 bg-primary-900/10 blur-[120px] rounded-full" />
+        <div className="absolute bottom-1/4 -right-1/4 w-1/2 h-1/2 bg-blue-900/10 blur-[120px] rounded-full" />
+      </div>
 
-          <h2 className="text-3xl font-semibold text-slate-900 mb-4">
-            From Voice to Transcript, Knowledge, and Value
+      {/* Back to Home Link */}
+      <Link 
+        to="/" 
+        className="absolute top-8 left-8 flex items-center gap-2 text-gray-400 hover:text-white transition-colors z-20 group"
+      >
+        <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1" />
+        <span className="text-sm font-medium">Back to Home</span>
+      </Link>
+
+      {/* LEFT SIDE - Illustration */}
+      <div className="hidden lg:flex w-1/2 items-center justify-center p-16 bg-[#0a0a1a] relative">
+        <div className="absolute inset-0 bg-gradient-to-br from-primary-900/20 via-transparent to-blue-900/20" />
+        
+        <motion.div
+          initial={{ opacity: 0, x: -50 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          className="max-w-lg text-center relative z-10"
+        >
+          <div className="relative group">
+            <div className="absolute -inset-4 bg-primary-500/10 blur-2xl rounded-full opacity-50 group-hover:opacity-100 transition-opacity" />
+            <img
+              src={loginImg}
+              alt="NIS AI platform preview"
+              className="rounded-3xl shadow-2xl mb-12 border border-white/5 relative z-10 transform scale-105"
+            />
+          </div>
+
+          <h2 className="text-4xl font-bold text-white mb-6 leading-tight">
+            The Future of <br />
+            <span className="text-gradient">Intelligent Meetings</span>
           </h2>
 
-          <p className="text-slate-600 leading-relaxed">
-            Real-time transcription, live translation and AI summaries for
-            meetings, lectures and videos. Capture ideas instantly and transform
-            conversations into knowledge.
+          <p className="text-gray-400 text-lg leading-relaxed max-w-md mx-auto">
+            Experience real-time transcription, live translation, and AI-powered insights that transform every conversation into structured knowledge.
           </p>
 
-          <p className="text-sm text-slate-500 mt-6">
-            No Download · No Setup · Instant Web Access
-          </p>
+          <div className="flex items-center justify-center gap-8 mt-12 opacity-50">
+            <div className="flex flex-col items-center gap-2">
+              <span className="text-2xl font-bold text-white">4.9/5</span>
+              <span className="text-xs uppercase tracking-widest text-gray-500">Rating</span>
+            </div>
+            <div className="w-px h-8 bg-white/10" />
+            <div className="flex flex-col items-center gap-2">
+              <span className="text-2xl font-bold text-white">2M+</span>
+              <span className="text-xs uppercase tracking-widest text-gray-500">Users</span>
+            </div>
+          </div>
         </motion.div>
       </div>
 
-      {/* RIGHT SIDE */}
-      <div className="flex items-center justify-center w-full lg:w-1/2 p-6">
+      {/* RIGHT SIDE - Login Form */}
+      <div className="flex items-center justify-center w-full lg:w-1/2 p-6 relative z-10">
         <motion.div
-          initial={{ opacity: 0, scale: 0.96 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.4 }}
-          className="w-full max-w-md bg-white/90 backdrop-blur-lg border border-slate-200 shadow-xl rounded-2xl p-8"
+          initial={{ opacity: 0, x: 50 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.6 }}
+          className="w-full max-w-md glass-dark border border-white/5 shadow-2xl rounded-3xl p-10"
         >
           {/* Header */}
-          <div className="flex justify-between items-center mb-8">
-            <h1 className="font-bold text-lg text-slate-900">CHEETU AI</h1>
+          <div className="flex justify-between items-center mb-10">
+            <div className="flex items-center gap-2">
+              <div className="w-10 h-10 bg-primary-600 rounded-xl flex items-center justify-center shadow-lg shadow-primary-600/30">
+                <Cpu className="text-white w-6 h-6" />
+              </div>
+              <span className="text-xl font-bold tracking-tight text-white">NIS AI</span>
+            </div>
 
-            <select className="text-sm border border-slate-300 rounded-md px-2 py-1 bg-white">
-              <option>English</option>
+            <select className="text-xs bg-white/5 border border-white/10 rounded-lg px-2 py-1.5 focus:outline-none focus:ring-1 focus:ring-primary-500 transition-all cursor-pointer">
+              <option className="bg-[#050510]">English</option>
+              <option className="bg-[#050510]">Español</option>
+              <option className="bg-[#050510]">Français</option>
             </select>
           </div>
 
           {/* Title */}
-          <h2 className="text-2xl font-semibold text-slate-900 text-center mb-2">
-            Sign up for Cheetu AI
-          </h2>
+          <div className="text-center mb-8">
+            <h2 className="text-3xl font-bold text-white mb-2">Create Account</h2>
+            <p className="text-gray-400">Get 360 minutes of transcription every month</p>
+          </div>
 
-          <p className="text-sm text-center text-slate-600 mb-6">
-            Get 360 minutes of transcription every month
-          </p>
+          <div className="space-y-4 mb-8">
+            {/* Social Buttons */}
+            <button className="flex items-center justify-center gap-3 w-full bg-white/5 border border-white/5 rounded-xl py-3 hover:bg-white/10 hover:border-white/10 transition-all duration-300 group">
+              <FcGoogle size={22} />
+              <span className="font-medium text-gray-200">Continue with Google</span>
+            </button>
 
-          {/* Google */}
-          <button className="flex items-center justify-center gap-3 w-full border border-slate-300 rounded-lg py-2 mb-3 hover:bg-slate-50 transition focus:outline-none focus:ring-2 focus:ring-indigo-500">
-            <FcGoogle size={20} />
-            Continue with Google
-          </button>
-
-          {/* Apple */}
-          <button className="flex items-center justify-center gap-3 w-full border border-slate-300 rounded-lg py-2 mb-5 hover:bg-slate-50 transition focus:outline-none focus:ring-2 focus:ring-indigo-500">
-            <FaApple size={18} />
-            Continue with Apple
-          </button>
+            <button className="flex items-center justify-center gap-3 w-full bg-white/5 border border-white/5 rounded-xl py-3 hover:bg-white/10 hover:border-white/10 transition-all duration-300 group">
+              <FaApple size={20} className="text-white" />
+              <span className="font-medium text-gray-200">Continue with Apple</span>
+            </button>
+          </div>
 
           {/* Divider */}
-          <div className="flex items-center mb-5">
-            <div className="flex-grow h-px bg-slate-300"></div>
-            <span className="px-3 text-sm text-slate-500">or</span>
-            <div className="flex-grow h-px bg-slate-300"></div>
+          <div className="flex items-center mb-8">
+            <div className="flex-grow h-px bg-white/5"></div>
+            <span className="px-4 text-xs font-semibold text-gray-500 uppercase tracking-widest">or email</span>
+            <div className="flex-grow h-px bg-white/5"></div>
           </div>
 
-          {/* Email */}
-          <div className="mb-4">
-            <label className="text-sm font-medium text-slate-700">
-              Email Address
-            </label>
+          {/* Form */}
+          <div className="space-y-6">
+            <div className="space-y-1.5">
+              <label className="text-sm font-medium text-gray-300 ml-1">
+                Email Address
+              </label>
+              <input
+                type="email"
+                placeholder="name@company.com"
+                className="w-full bg-white/5 border border-white/5 rounded-xl px-4 py-3 text-white placeholder:text-gray-600 focus:outline-none focus:ring-2 focus:ring-primary-600 focus:bg-white/10 transition-all duration-300"
+              />
+            </div>
 
-            <input
-              type="email"
-              placeholder="you@example.com"
-              className="w-full mt-1 border border-slate-300 rounded-lg px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-            />
+            <div className="space-y-1.5">
+              <div className="flex justify-between items-center px-1">
+                <label className="text-sm font-medium text-gray-300">
+                  Password
+                </label>
+                <a href="#" className="text-xs text-primary-400 hover:text-primary-300 transition-colors">Forgot?</a>
+              </div>
+              <input
+                type="password"
+                placeholder="••••••••"
+                className="w-full bg-white/5 border border-white/5 rounded-xl px-4 py-3 text-white placeholder:text-gray-600 focus:outline-none focus:ring-2 focus:ring-primary-600 focus:bg-white/10 transition-all duration-300"
+              />
+            </div>
+
+            <button className="btn-primary w-full py-4 text-lg mt-2">
+              Get Started
+            </button>
           </div>
-
-          {/* Password */}
-          <div className="mb-6">
-            <label className="text-sm font-medium text-slate-700">
-              Password
-            </label>
-
-            <input
-              type="password"
-              placeholder="••••••••"
-              className="w-full mt-1 border border-slate-300 rounded-lg px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-            />
-          </div>
-
-          {/* Sign Up */}
-          <button className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 rounded-lg transition focus:outline-none focus:ring-2 focus:ring-indigo-500">
-            Sign Up
-          </button>
 
           {/* Footer */}
-          <p className="text-center text-sm text-slate-600 mt-5">
-            Already a member?{" "}
-            <span className="text-indigo-600 font-medium cursor-pointer hover:underline">
+          <p className="text-center text-sm text-gray-500 mt-8">
+            Already have an account?{" "}
+            <Link to="/login" className="text-primary-400 font-semibold hover:text-primary-300 transition-colors">
               Sign in
-            </span>
+            </Link>
           </p>
         </motion.div>
       </div>

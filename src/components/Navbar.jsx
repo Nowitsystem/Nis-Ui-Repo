@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, Cpu } from "lucide-react";
 
@@ -15,10 +16,10 @@ const Navbar = () => {
   }, []);
 
   const navLinks = [
-    { name: "Features", href: "#features" },
-    { name: "How it Works", href: "#how-it-works" },
-    { name: "Pricing", href: "#pricing" },
-    { name: "Testimonials", href: "#testimonials" },
+    { name: "Features", href: "/features" },
+    { name: "How it Works", href: "/#how-it-works" },
+    { name: "Pricing", href: "/#pricing" },
+    { name: "Testimonials", href: "/#testimonials" },
   ];
 
   return (
@@ -26,33 +27,47 @@ const Navbar = () => {
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? "py-4 glass-dark shadow-xl" : "py-6 bg-transparent"}`}
     >
       <div className="container mx-auto px-6 flex justify-between items-center">
-        <motion.div
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.5 }}
-          className="flex items-center gap-2"
-        >
-          <div className="w-10 h-10 bg-primary-600 rounded-xl flex items-center justify-center shadow-lg shadow-primary-600/30">
-            <Cpu className="text-white w-6 h-6" />
-          </div>
-          <span className="text-xl font-bold tracking-tight text-white">
-            NIS AI
-          </span>
-        </motion.div>
+        <Link to="/">
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5 }}
+            className="flex items-center gap-2"
+          >
+            <div className="w-10 h-10 bg-primary-600 rounded-xl flex items-center justify-center shadow-lg shadow-primary-600/30">
+              <Cpu className="text-white w-6 h-6" />
+            </div>
+            <span className="text-xl font-bold tracking-tight text-white">
+              NIS AI
+            </span>
+          </motion.div>
+        </Link>
 
         {/* Desktop Nav */}
         <div className="hidden md:flex items-center gap-8">
           {navLinks.map((link, idx) => (
-            <motion.a
+            <motion.div
               key={link.name}
-              href={link.href}
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: idx * 0.1 }}
-              className="text-sm font-medium text-gray-300 hover:text-primary-400 transition-colors"
             >
-              {link.name}
-            </motion.a>
+              {link.href.startsWith("/#") ? (
+                <a
+                  href={link.href}
+                  className="text-sm font-medium text-gray-300 hover:text-primary-400 transition-colors"
+                >
+                  {link.name}
+                </a>
+              ) : (
+                <Link
+                  to={link.href}
+                  className="text-sm font-medium text-gray-300 hover:text-primary-400 transition-colors"
+                >
+                  {link.name}
+                </Link>
+              )}
+            </motion.div>
           ))}
           <motion.button
             initial={{ opacity: 0, scale: 0.9 }}
@@ -84,14 +99,25 @@ const Navbar = () => {
           >
             <div className="flex flex-col gap-4">
               {navLinks.map((link) => (
-                <a
-                  key={link.name}
-                  href={link.href}
-                  className="text-lg font-medium text-gray-300 hover:text-primary-400"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  {link.name}
-                </a>
+                link.href.startsWith("/#") ? (
+                  <a
+                    key={link.name}
+                    href={link.href}
+                    className="text-lg font-medium text-gray-300 hover:text-primary-400"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    {link.name}
+                  </a>
+                ) : (
+                  <Link
+                    key={link.name}
+                    to={link.href}
+                    className="text-lg font-medium text-gray-300 hover:text-primary-400"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    {link.name}
+                  </Link>
+                )
               ))}
               <button className="btn-primary w-full mt-2">Get Started</button>
             </div>
@@ -101,5 +127,6 @@ const Navbar = () => {
     </nav>
   );
 };
+
 
 export default Navbar;
