@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
-import { Play, ArrowRight, Zap, Target, Globe } from "lucide-react";
+import { Play, ArrowRight, Zap, Globe } from "lucide-react";
+import heroImg from "../assets/hero1.png";
 
 const Hero = () => {
   return (
@@ -59,103 +60,79 @@ const Hero = () => {
           </motion.div>
         </div>
 
-        {/* Dashboard Preview */}
+        {/* Dashboard Preview - Compact Professional Refinement */}
         <motion.div
-          initial={{ opacity: 0, y: 100 }}
+          initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{
-            duration: 0.8,
-            delay: 0.5,
-            type: "spring",
-            damping: 20,
-          }}
-          className="relative max-w-6xl mx-auto"
+          transition={{ duration: 0.8, delay: 0.4 }}
+          className="relative max-w-4xl mx-auto"
+          style={{ perspective: 1500 }}
         >
-          <div className="relative p-2 rounded-2xl glass border border-white/10 shadow-2xl overflow-hidden group">
-            <div className="absolute inset-0 bg-gradient-to-tr from-primary-600/5 to-transparent pointer-events-none" />
-            <div className="rounded-xl overflow-hidden bg-[#0A0A0F] aspect-[16/9] border border-white/5 flex">
-              {/* Mock UI */}
-              <div className="w-1/4 border-r border-white/5 p-4 hidden md:block">
-                <div className="flex flex-col gap-4">
-                  {[1, 2, 3, 4].map((i) => (
-                    <div
-                      key={i}
-                      className="h-8 rounded-lg bg-white/5 animate-pulse"
-                    />
-                  ))}
-                </div>
+          {/* Backlight Glow */}
+          <div className="absolute inset-20 bg-primary-500/15 rounded-full blur-[100px] -z-10" />
+
+          <motion.div
+            initial={{ rotateX: 10 }}
+            animate={{ rotateX: 5 }}
+            whileHover={{ rotateX: 0 }}
+            transition={{ duration: 0.8 }}
+            className="relative p-1.5 rounded-2xl glass border border-white/10 shadow-[0_40px_80px_-20px_rgba(0,0,0,0.6)] overflow-hidden"
+          >
+            {/* Browser Header Bar */}
+            <div className="flex items-center gap-2 px-4 py-3 bg-white/5 border-b border-white/10">
+              <div className="flex gap-1.5">
+                <div className="w-2 h-2 rounded-full bg-red-400/60" />
+                <div className="w-2 h-2 rounded-full bg-yellow-400/60" />
+                <div className="w-2 h-2 rounded-full bg-green-400/60" />
               </div>
-              <div className="flex-1 p-6 flex flex-col gap-6">
-                <div className="flex justify-between items-center">
-                  <div className="w-48 h-6 rounded-lg bg-white/5 animate-pulse" />
-                  <div className="w-24 h-6 rounded-lg bg-primary-600/20 border border-primary-600/30" />
-                </div>
-                <div className="flex-1 grid grid-cols-3 gap-4">
-                  <div className="col-span-2 space-y-4">
-                    <div className="p-4 rounded-xl glass border border-white/5 space-y-3">
-                      <div className="w-full h-3 rounded bg-white/5" />
-                      <div className="w-3/4 h-3 rounded bg-white/5" />
-                      <div className="w-1/2 h-3 rounded bg-white/5" />
-                    </div>
-                    <div className="p-4 rounded-xl glass border border-white/5 space-y-3">
-                      <div className="w-4/5 h-3 rounded bg-white/5" />
-                      <div className="w-full h-3 rounded bg-white/5" />
-                    </div>
-                  </div>
-                  <div className="space-y-4">
-                    <div className="h-full rounded-xl bg-primary-600/5 border border-primary-600/10 flex items-center justify-center">
-                      <div className="text-primary-400 flex flex-col items-center gap-2">
-                        <Target className="w-8 h-8 opacity-50" />
-                        <span className="text-[10px] font-medium tracking-widest uppercase opacity-40">
-                          AI Summary
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+              <div className="mx-auto flex items-center gap-2 px-3 py-1 rounded-md bg-black/30 border border-white/5 w-1/2 justify-center">
+                <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
+                <span className="text-[9px] text-gray-500 font-medium tracking-tight">app.nowitsys.ai/dashboard</span>
               </div>
             </div>
-          </div>
 
-          {/* Floating Cards */}
+            <div className="rounded-b-xl overflow-hidden bg-[#0A0A0F] relative">
+              <img 
+                src={heroImg} 
+                alt="NIS AI Dashboard" 
+                className="w-full h-[380px] md:h-[480px] object-cover object-top hover:scale-[1.02] transition-transform duration-1000"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none" />
+            </div>
+          </motion.div>
+
+          {/* Floating Cards - Refined positioning */}
           <motion.div
-            animate={{ y: [0, -15, 0] }}
-            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-            className="absolute -top-10 -right-10 hidden lg:block p-4 rounded-xl glass-dark border border-white/10 shadow-2xl backdrop-blur-xl max-w-[200px]"
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.8 }}
+            className="absolute -top-6 -right-6 hidden lg:block p-4 rounded-xl glass-dark border border-white/10 shadow-2xl backdrop-blur-xl max-w-[200px] z-20"
           >
             <div className="flex items-center gap-3 mb-2">
               <div className="w-8 h-8 rounded-full bg-green-500/20 flex items-center justify-center">
                 <Globe className="w-4 h-4 text-green-400" />
               </div>
-              <span className="text-xs font-semibold text-white">
-                Live Translation
-              </span>
+              <span className="text-xs font-semibold text-white">Live Translation</span>
             </div>
             <p className="text-[10px] text-gray-400 leading-relaxed">
-              Spanish to English transcription active (98% confidence)
+              Real-time analysis active in 3 languages.
             </p>
           </motion.div>
 
           <motion.div
-            animate={{ y: [0, 15, 0] }}
-            transition={{
-              duration: 4,
-              repeat: Infinity,
-              ease: "easeInOut",
-              delay: 1,
-            }}
-            className="absolute -bottom-10 -left-10 hidden lg:block p-4 rounded-xl glass-dark border border-white/10 shadow-2xl backdrop-blur-xl max-w-[200px]"
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 1 }}
+            className="absolute -bottom-6 -left-6 hidden lg:block p-4 rounded-xl glass-dark border border-white/10 shadow-2xl backdrop-blur-xl max-w-[200px] z-20"
           >
             <div className="flex items-center gap-3 mb-2">
               <div className="w-8 h-8 rounded-full bg-primary-500/20 flex items-center justify-center">
                 <Zap className="w-4 h-4 text-primary-400" />
               </div>
-              <span className="text-xs font-semibold text-white">
-                Auto-Summary
-              </span>
+              <span className="text-xs font-semibold text-white">Auto-Summary</span>
             </div>
             <p className="text-[10px] text-gray-400 leading-relaxed">
-              3 action items identified from the last 15 minutes.
+              Key action items captured successfully.
             </p>
           </motion.div>
         </motion.div>
