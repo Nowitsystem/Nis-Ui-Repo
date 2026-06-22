@@ -1,29 +1,23 @@
-import Navbar from './components/Navbar';
-import Hero from './components/Hero';
-import Features from './components/Features';
-import HowItWorks from './components/HowItWorks';
-import Benefits from './components/Benefits';
-import Testimonials from './components/Testimonials';
-import Pricing from './components/Pricing';
-import CTA from './components/CTA';
-import Footer from './components/Footer';
+import { Route, Routes } from "react-router-dom";
+import Home from "./pages/Home";
+import Login from "./pages/Login";
+import FeaturesPage from "./pages/FeaturesPage";
+import Dashboard from "./pages/Dashboard";
+
+import AdminDashboard from "./pages/AdminDashboard";
 
 function App() {
   return (
-    <div className="bg-[#050510] text-white">
-      <Navbar />
-      <main>
-        <Hero />
-        <Features />
-        <HowItWorks />
-        <Benefits />
-        <Testimonials />
-        <Pricing />
-        <CTA />
-      </main>
-      <Footer />
-    </div>
-  )
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/features" element={<FeaturesPage />} />
+      <Route path="/dashboard" element={<Dashboard />} />
+      <Route path="/admin" element={<AdminDashboard />} />
+    </Routes>
+  );
 }
 
-export default App
+
+export default App;
+
