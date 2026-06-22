@@ -1,11 +1,73 @@
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
 import { FaApple } from "react-icons/fa";
 import { Cpu, ArrowLeft } from "lucide-react";
 import loginImg from "../assets/login.png";
 
 export default function Login() {
+  const [isSignUp, setIsSignUp] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [name, setName] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [location, setLocation] = useState("");
+  const [country, setCountry] = useState("India");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError("");
+
+    if (isSignUp && password !== confirmPassword) {
+      setError("Passwords do not match");
+      setLoading(false);
+      return;
+    }
+
+    const endpoint = isSignUp ? "/api/auth/register" : "/api/auth/login";
+    const body = isSignUp 
+      ? { name, email, password, phoneNumber, location, country }
+      : { email, password };
+
+    try {
+      const res = await fetch(`http://localhost:5000${endpoint}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        if (isSignUp) {
+          // After signup, switch to login or auto-login
+          setIsSignUp(false);
+          setError("Account created! Please sign in.");
+        } else {
+          localStorage.setItem("token", data.token);
+          if (data.role === "admin") {
+            navigate("/admin");
+          } else {
+            navigate("/dashboard");
+          }
+        }
+      } else {
+        setError(data.message || "Action failed");
+      }
+    } catch (err) {
+      setError("Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="min-h-screen flex bg-[#050510] text-white overflow-hidden relative">
       {/* Background blobs */}
@@ -65,16 +127,16 @@ export default function Login() {
         </motion.div>
       </div>
 
-      {/* RIGHT SIDE - Login Form */}
+      {/* RIGHT SIDE - Form */}
       <div className="flex items-center justify-center w-full lg:w-1/2 p-6 relative z-10">
         <motion.div
           initial={{ opacity: 0, x: 50 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.6 }}
-          className="w-full max-w-md glass-dark border border-white/5 shadow-2xl rounded-3xl p-10"
+          className="w-full max-w-md glass-dark border border-white/5 shadow-2xl rounded-3xl p-10 max-h-[90vh] overflow-y-auto custom-scrollbar"
         >
           {/* Header */}
-          <div className="flex justify-between items-center mb-10">
+          <div className="flex justify-between items-center mb-6">
             <div className="flex items-center gap-2">
               <div className="w-10 h-10 bg-primary-600 rounded-xl flex items-center justify-center shadow-lg shadow-primary-600/30">
                 <Cpu className="text-white w-6 h-6" />
@@ -90,72 +152,163 @@ export default function Login() {
           </div>
 
           {/* Title */}
-          <div className="text-center mb-8">
-            <h2 className="text-3xl font-bold text-white mb-2">Create Account</h2>
-            <p className="text-gray-400">Get 360 minutes of transcription every month</p>
+          <div className="text-center mb-6">
+            <h2 className="text-3xl font-bold text-white mb-2">{isSignUp ? "Join NIS AI" : "Welcome Back"}</h2>
+            <p className="text-gray-400">{isSignUp ? "Start your 7-day free trial today" : "Sign in to your NIS AI account"}</p>
           </div>
 
-          <div className="space-y-4 mb-8">
-            {/* Social Buttons */}
-            <button className="flex items-center justify-center gap-3 w-full bg-white/5 border border-white/5 rounded-xl py-3 hover:bg-white/10 hover:border-white/10 transition-all duration-300 group">
-              <FcGoogle size={22} />
-              <span className="font-medium text-gray-200">Continue with Google</span>
-            </button>
-
-            <button className="flex items-center justify-center gap-3 w-full bg-white/5 border border-white/5 rounded-xl py-3 hover:bg-white/10 hover:border-white/10 transition-all duration-300 group">
-              <FaApple size={20} className="text-white" />
-              <span className="font-medium text-gray-200">Continue with Apple</span>
-            </button>
-          </div>
+          {!isSignUp && (
+            <div className="space-y-4 mb-8">
+              {/* Social Buttons */}
+              <button 
+                onClick={() => window.location.href = 'http://localhost:5000/api/auth/google'}
+                className="flex items-center justify-center gap-3 w-full bg-white/5 border border-white/5 rounded-xl py-3 hover:bg-white/10 hover:border-white/10 transition-all duration-300 group"
+              >
+                <FcGoogle size={22} />
+                <span className="font-medium text-gray-200">Continue with Google</span>
+              </button>
+            </div>
+          )}
 
           {/* Divider */}
-          <div className="flex items-center mb-8">
-            <div className="flex-grow h-px bg-white/5"></div>
-            <span className="px-4 text-xs font-semibold text-gray-500 uppercase tracking-widest">or email</span>
-            <div className="flex-grow h-px bg-white/5"></div>
-          </div>
+          {!isSignUp && (
+            <div className="flex items-center mb-8">
+              <div className="flex-grow h-px bg-white/5"></div>
+              <span className="px-4 text-xs font-semibold text-gray-500 uppercase tracking-widest">or email</span>
+              <div className="flex-grow h-px bg-white/5"></div>
+            </div>
+          )}
 
           {/* Form */}
-          <div className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-4">
+            {error && (
+              <div className={`border text-xs py-2 px-4 rounded-xl text-center ${error.includes('created') ? 'bg-green-500/10 border-green-500/20 text-green-400' : 'bg-red-500/10 border-red-500/20 text-red-400'}`}>
+                {error}
+              </div>
+            )}
+            
+            {isSignUp && (
+              <div className="space-y-1.5">
+                <label className="text-sm font-medium text-gray-300 ml-1">Full Name</label>
+                <input
+                  type="text"
+                  required
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  placeholder="John Doe"
+                  className="w-full bg-white/5 border border-white/5 rounded-xl px-4 py-3 text-white placeholder:text-gray-600 focus:outline-none focus:ring-2 focus:ring-primary-600 focus:bg-white/10 transition-all duration-300"
+                />
+              </div>
+            )}
+
             <div className="space-y-1.5">
-              <label className="text-sm font-medium text-gray-300 ml-1">
-                Email Address
-              </label>
+              <label className="text-sm font-medium text-gray-300 ml-1">Email Address</label>
               <input
                 type="email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 placeholder="name@company.com"
                 className="w-full bg-white/5 border border-white/5 rounded-xl px-4 py-3 text-white placeholder:text-gray-600 focus:outline-none focus:ring-2 focus:ring-primary-600 focus:bg-white/10 transition-all duration-300"
               />
             </div>
 
+            {isSignUp && (
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-1.5">
+                  <label className="text-sm font-medium text-gray-300 ml-1">Phone Number</label>
+                  <input
+                    type="tel"
+                    required
+                    value={phoneNumber}
+                    onChange={(e) => setPhoneNumber(e.target.value)}
+                    placeholder="+91..."
+                    className="w-full bg-white/5 border border-white/5 rounded-xl px-4 py-3 text-white placeholder:text-gray-600 focus:outline-none focus:ring-2 focus:ring-primary-600 focus:bg-white/10 transition-all duration-300"
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <label className="text-sm font-medium text-gray-300 ml-1">Location</label>
+                  <input
+                    type="text"
+                    required
+                    value={location}
+                    onChange={(e) => setLocation(e.target.value)}
+                    placeholder="City"
+                    className="w-full bg-white/5 border border-white/5 rounded-xl px-4 py-3 text-white placeholder:text-gray-600 focus:outline-none focus:ring-2 focus:ring-primary-600 focus:bg-white/10 transition-all duration-300"
+                  />
+                </div>
+              </div>
+            )}
+
+            {isSignUp && (
+              <div className="space-y-1.5">
+                <label className="text-sm font-medium text-gray-300 ml-1">Country</label>
+                <input
+                  type="text"
+                  required
+                  value={country}
+                  onChange={(e) => setCountry(e.target.value)}
+                  placeholder="Country"
+                  className="w-full bg-white/5 border border-white/5 rounded-xl px-4 py-3 text-white placeholder:text-gray-600 focus:outline-none focus:ring-2 focus:ring-primary-600 focus:bg-white/10 transition-all duration-300"
+                />
+              </div>
+            )}
+
             <div className="space-y-1.5">
               <div className="flex justify-between items-center px-1">
-                <label className="text-sm font-medium text-gray-300">
-                  Password
-                </label>
-                <a href="#" className="text-xs text-primary-400 hover:text-primary-300 transition-colors">Forgot?</a>
+                <label className="text-sm font-medium text-gray-300">Password</label>
+                {!isSignUp && <a href="#" className="text-xs text-primary-400 hover:text-primary-300 transition-colors">Forgot?</a>}
               </div>
               <input
                 type="password"
+                required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
                 className="w-full bg-white/5 border border-white/5 rounded-xl px-4 py-3 text-white placeholder:text-gray-600 focus:outline-none focus:ring-2 focus:ring-primary-600 focus:bg-white/10 transition-all duration-300"
               />
             </div>
 
-            <button className="btn-primary w-full py-4 text-lg mt-2">
-              Get Started
-            </button>
-          </div>
+            {isSignUp && (
+              <div className="space-y-1.5">
+                <label className="text-sm font-medium text-gray-300 ml-1">Confirm Password</label>
+                <input
+                  type="password"
+                  required
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  placeholder="••••••••"
+                  className="w-full bg-white/5 border border-white/5 rounded-xl px-4 py-3 text-white placeholder:text-gray-600 focus:outline-none focus:ring-2 focus:ring-primary-600 focus:bg-white/10 transition-all duration-300"
+                />
+              </div>
+            )}
 
-          {/* Footer */}
-          <p className="text-center text-sm text-gray-500 mt-8">
-            Already have an account?{" "}
-            <Link to="/login" className="text-primary-400 font-semibold hover:text-primary-300 transition-colors">
-              Sign in
-            </Link>
+            <button 
+              type="submit" 
+              disabled={loading}
+              className="btn-primary w-full py-4 text-lg mt-2 flex items-center justify-center gap-2"
+            >
+              {loading ? "Processing..." : (isSignUp ? "Create Account" : "Sign In")}
+            </button>
+          </form>
+
+          {/* Footer Toggle */}
+          <p className="text-center text-sm text-gray-500 mt-6">
+            {isSignUp ? "Already have an account?" : "Don't have an account?"}{" "}
+            <button 
+              onClick={() => {
+                setIsSignUp(!isSignUp);
+                setError("");
+              }}
+              className="text-primary-400 font-semibold hover:text-primary-300 transition-colors"
+            >
+              {isSignUp ? "Sign In" : "Sign Up"}
+            </button>
           </p>
         </motion.div>
       </div>
     </div>
   );
 }
+
+
